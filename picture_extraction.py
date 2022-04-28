@@ -133,7 +133,7 @@ def main(unused_argv):
     mask = pred_dict['decoded_labels']
     mask_g = mask[:,:,0]
     ret,mask_g = cv2.threshold(mask_g,120,255,0)
-    _, contours, hierarchy = cv2.findContours(mask_g, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(mask_g, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours.sort(key=cv2.contourArea, reverse=True)
     height,width=img.shape[:2]
     cord_lst=[]
@@ -151,8 +151,8 @@ def main(unused_argv):
         figure_cropped_margin=cv2.resize(figure_cropped_margin,(fw*width_r//1600,fh*height_r//1600))
         cv2.imwrite(os.path.join(output_dir,os.path.basename(image_path)+"_"+str(index)+".jpg"),figure_cropped_margin)
     #pascal VOC形式でアノテーションの付与された推論結果が必要な場合、以下の2行のコメントアウトを外す。
-    #make_xml(image_basename,1600,1600,cord_lst)
-    #cv2.imwrite(os.path.join(FLAGS.output_dir,os.path.basename(image_path)),img)
+    make_xml(image_basename,1600,1600,cord_lst)
+    cv2.imwrite(os.path.join(FLAGS.output_dir,os.path.basename(image_path)),img)
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)
