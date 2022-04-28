@@ -24,6 +24,8 @@ import matplotlib.pyplot as plt
 import xml.etree.ElementTree as ET
 from tensorflow.python import debug as tf_debug
 
+from tqdm import tqdm
+
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = "1"
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -125,7 +127,7 @@ def main(unused_argv):
   if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-  for pred_dict, image_path in zip(predictions, image_files):
+  for pred_dict, image_path in tqdm(zip(predictions, image_files)):
     img_raw = cv2.imread(image_path,1)
     height_r,width_r=img_raw.shape[:2]
     img=cv2.resize(img_raw,(1600,1600))
